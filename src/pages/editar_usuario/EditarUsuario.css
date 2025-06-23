@@ -1,1 +1,96 @@
+.usuario-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  min-height: 70vh;
+  background: #fff;
+}
 
+.titulo-cadastro-usuario {
+  margin-bottom: 18px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.usuario-form {
+  background: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #0001;
+  min-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 18px;
+  color: #222;
+  font-weight: 500;
+}
+
+.usuario-form-linhas {
+  display: flex;
+  gap: 32px;
+}
+
+.usuario-col-esq,
+.usuario-col-dir {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.usuario-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.usuario-group label {
+  font-size: 15px;
+  color: #222;
+  font-weight: 500;
+}
+
+.usuario-group input {
+  padding: 7px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.usuario-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.btn-confirmar,
+.btn-voltar {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 4px;
+  background: #e0e0e0;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-confirmar {
+  background: #8db596;
+  color: #fff;
+}
+.btn-confirmar:hover {
+  background: #6b9178;
+}
+.btn-voltar:hover {
+  background: #b0b0b0;
+}
