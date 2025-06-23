@@ -1,0 +1,86 @@
+.cadastro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  min-height: 70vh;
+  background: #fff;
+}
+
+.titulo-cadastro-livro {
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cadastro-form {
+  background: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #0001;
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 18px;
+  color: #222;
+  font-weight: 500;
+}
+
+.form-left, .form-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Alinha lado a lado se quiser um layout horizontal para form-left e form-right */
+@media (min-width: 800px) {
+  .cadastro-form {
+    flex-direction: row;
+    gap: 40px;
+    align-items: flex-start;
+  }
+  .form-left, .form-right {
+    flex: 1;
+  }
+}
+
+/* Para manter botões na direita dentro do card */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Botões */
+.btn-confirmar,
+.btn-voltar {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 4px;
+  background: #e0e0e0;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-confirmar {
+  background: #8db596;
+  color: #fff;
+}
+.btn-confirmar:hover {
+  background: #6b9178;
+}
+.btn-voltar:hover {
+  background: #b0b0b0;
+}
