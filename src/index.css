@@ -1,0 +1,32 @@
+.admin-menu.centralizado {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 auto 6px auto;
+  padding: 10px 0 10px 0;
+  background: transparent;
+  border: none;
+}
+
+.admin-menu button {
+  background: #fff;
+  border: 1px solid #8db596;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-menu button:hover {
+  background: #8db596;
+  color: #fff;
+}
+
+.admin-content {
+  padding: 12px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
