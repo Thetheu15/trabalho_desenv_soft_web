@@ -1,34 +1,63 @@
-import React, { useState } from 'react';
-import EditarLivro from './pages/EditarLivro/EditarLivro';
-import RemoverLivro from './pages/RemoverLivro/RemoverLivro';
-import CadastroUsuario from './pages/CadastroUsuario/CadastroUsuario';
-import EditarUsuario from './pages/EditarUsuario/EditarUsuario';
-import RemoverUsuario from './pages/RemoverUsuario/RemoverUsuario';
+import React, { useState } from 'react'
+import Login             from './pages/Login/Login'
+import CadastroInicial   from './pages/cadastro_inicial/CadastroInicial'
+import Sidebar           from './components/Sidebar/Sidebar'
+import CatalogoLivros    from './pages/catalogo_livros/CatalogoLivros'
+
+// telas de admin
+import EditarLivro       from './pages/editar_livro/EditarLivro'
+import RemoverLivro      from './pages/remover_livro/RemoverLivro'
+import CadastroUsuario   from './pages/cadastro_usuario/CadastroUsuario'
+import EditarUsuario     from './pages/editar_usuario/EditarUsuario'
+import RemoverUsuario    from './pages/remover_usuario/RemoverUsuario'
 
 function App() {
-  const [tela, setTela] = useState('editarLivro');
+  const [user, setUser] = useState(null)
+  const [tela, setTela] = useState('login')
+
+  if (!user) {
+    return tela === 'CadastroInicial' ? (
+      <CadastroInicial
+        onCadastroInicial={u => { setUser(u); setTela('catalogoLivros') }}
+        switchToLogin={() => setTela('login')}
+      />
+    ) : (
+      <Login
+        onLogin={u => { setUser(u); setTela('catalogoLivros') }}
+        switchToCadastroInicial={() => setTela('CadastroInicial')}
+      />
+    )
+  }
 
   return (
-    <div>
-      {/* Menu simples, centralizado */}
-      <nav className="admin-menu centralizado">
-        <button onClick={() => setTela('editarLivro')}>Edição de Livro</button>
-        <button onClick={() => setTela('removerLivro')}>Remoção de Livro</button>
-        <button onClick={() => setTela('cadastroUsuario')}>Cadastro de Usuário</button>
-        <button onClick={() => setTela('editarUsuario')}>Edição de Usuário</button>
-        <button onClick={() => setTela('removerUsuario')}>Remoção de Usuário</button>
-      </nav>
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <Sidebar
+        isAdmin={user.isAdmin}
+        onSelect={action => {
+          if (action === 'logout') {
+            setUser(null)
+            setTela('login')
+          } else {
+            setTela(action)
+          }
+        }}
+      />
 
-      {/* Renderização condicional das telas */}
-      <div className="admin-content">
-        {tela === 'editarLivro' && <EditarLivro />}
-        {tela === 'removerLivro' && <RemoverLivro />}
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        {/* Tela principal - catálogo de livros */}
+        {tela === 'catalogoLivros' && (
+          <CatalogoLivros />
+        )}
+
+        {/* telas de admin */}
+        {tela === 'editarLivro'     && <EditarLivro />}
+        {tela === 'removerLivro'    && <RemoverLivro />}
         {tela === 'cadastroUsuario' && <CadastroUsuario />}
-        {tela === 'editarUsuario' && <EditarUsuario />}
-        {tela === 'removerUsuario' && <RemoverUsuario />}
+        {tela === 'editarUsuario'   && <EditarUsuario />}
+        {tela === 'removerUsuario'  && <RemoverUsuario />}
       </div>
     </div>
-  );
+  )
 }
 
 export default App;
