@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Login             from './pages/Login/Login'
+import Login             from './pages/login/Login'
 import CadastroInicial   from './pages/cadastro_inicial/CadastroInicial'
 import Sidebar           from './components/Sidebar/Sidebar'
 import CatalogoLivros    from './pages/catalogo_livros/CatalogoLivros'
