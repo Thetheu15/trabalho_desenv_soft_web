@@ -34,3 +34,35 @@ export async function entrar(req, res) {
     usuario: { id: user._id, nome: user.nome, isAdmin: user.isAdmin }
   })
 }
+
+// Edição de usuário existente
+export async function atualizarUsuario(req, res) {
+  try {
+    // req.body pode conter { nome, email, senha, isAdmin }  
+    // Se vier senha, faz hash
+    if (req.body.senha) {
+      const bcrypt = await import('bcryptjs')
+      req.body.senha = await bcrypt.hash(req.body.senha, 10)
+    }
+    const user = await Usuario.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).select('-senha')
+    if (!user) return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    res.json(user)
+  } catch (err) {
+    res.status(400).json({ mensagem: err.message })
+  }
+}
+
+// Deleção de usuário existente(apenas para admin)
+export async function deletarUsuario(req, res) {
+  try {
+    const user = await Usuario.findByIdAndDelete(req.params.id)
+    if (!user) return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    res.status(204).send()
+  } catch (err) {
+    res.status(400).json({ mensagem: err.message })
+  }
+}
