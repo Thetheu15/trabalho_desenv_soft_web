@@ -5,6 +5,8 @@ const usuarioSchema = new mongoose.Schema({
   login:    { type: String, required: true, unique: true },
   email:    { type: String, required: true, unique: true },
   senha:    { type: String, required: true },
+  // endereco: { type: String },
+  // telefone: { type: String },
   isAdmin:  { type: Boolean, default: false }
 }, { timestamps: true })
 

@@ -9,7 +9,7 @@ export async function cadastrar(req, res) {
   const hash = await bcrypt.hash(senha, 10)
 
   try {
-    const user = await Usuario.create({ nome, login, email, senha: hash })
+    const user = await Usuario.create({ nome, login, email, senha: hash /*, endereço, telefone*/  })
 
     res.status(201).json({ id: user._id, nome: user.nome, isAdmin: user.isAdmin })
   } catch (err) {
@@ -38,18 +38,27 @@ export async function entrar(req, res) {
 // Edição de usuário existente
 export async function atualizarUsuario(req, res) {
   try {
-    // req.body pode conter { nome, email, senha, isAdmin }  
-    // Se vier senha, faz hash
-    if (req.body.senha) {
-      const bcrypt = await import('bcryptjs')
-      req.body.senha = await bcrypt.hash(req.body.senha, 10)
+    const { nome, email, senha /*, endereco, telefone */ } = req.body
+
+    const dadosAtualizados = {}
+    if (nome  !== undefined) dadosAtualizados.nome  = nome
+    if (email !== undefined) dadosAtualizados.email = email
+
+    if (senha) {
+      dadosAtualizados.senha = await bcrypt.hash(senha, 10)
     }
+    // if (endereco !== undefined)  dadosAtualizados.endereco  = endereco
+    // if (telefone!== undefined)  dadosAtualizados.telefone = telefone
+
     const user = await Usuario.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      dadosAtualizados,
       { new: true, runValidators: true }
     ).select('-senha')
-    if (!user) return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+
+    if (!user) {
+      return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    }
     res.json(user)
   } catch (err) {
     res.status(400).json({ mensagem: err.message })
