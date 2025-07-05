@@ -4,12 +4,12 @@ import Usuario from '../modelos/Usuario.js'
 
 // Cadastra um novo usuário
 export async function cadastrar(req, res) {
-  const { nome, login, email, senha } = req.body
+  const { nome, login, email, senha, cpf, endereco, telefone } = req.body
 
   const hash = await bcrypt.hash(senha, 10)
 
   try {
-    const user = await Usuario.create({ nome, login, email, senha: hash /*, endereço, telefone*/  })
+    const user = await Usuario.create({ nome, login, email, senha: hash, cpf, endereco, telefone  })
 
     res.status(201).json({ id: user._id, nome: user.nome, isAdmin: user.isAdmin })
   } catch (err) {
@@ -38,7 +38,7 @@ export async function entrar(req, res) {
 // Edição de usuário existente
 export async function atualizarUsuario(req, res) {
   try {
-    const { nome, email, senha /*, endereco, telefone */ } = req.body
+    const { nome, email, senha, cpf, endereco, telefone } = req.body
 
     const dadosAtualizados = {}
     if (nome  !== undefined) dadosAtualizados.nome  = nome
@@ -47,8 +47,9 @@ export async function atualizarUsuario(req, res) {
     if (senha) {
       dadosAtualizados.senha = await bcrypt.hash(senha, 10)
     }
-    // if (endereco !== undefined)  dadosAtualizados.endereco  = endereco
-    // if (telefone!== undefined)  dadosAtualizados.telefone = telefone
+    if (cpf!== undefined)  dadosAtualizados.cpf = cpf
+    if (endereco !== undefined)  dadosAtualizados.endereco  = endereco
+    if (telefone!== undefined)  dadosAtualizados.telefone = telefone
 
     const user = await Usuario.findByIdAndUpdate(
       req.params.id,

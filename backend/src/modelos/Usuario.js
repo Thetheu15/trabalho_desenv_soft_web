@@ -5,8 +5,9 @@ const usuarioSchema = new mongoose.Schema({
   login:    { type: String, required: true, unique: true },
   email:    { type: String, required: true, unique: true },
   senha:    { type: String, required: true },
-  // endereco: { type: String },
-  // telefone: { type: String },
+  cpf:      { type: String, required: true, unique: true },
+  endereco: { type: String, required: true },
+  telefone: { type: String, required: true },
   isAdmin:  { type: Boolean, default: false }
 }, { timestamps: true })
 
