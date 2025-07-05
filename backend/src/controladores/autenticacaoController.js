@@ -13,7 +13,18 @@ export async function cadastrar(req, res) {
 
     res.status(201).json({ id: user._id, nome: user.nome, isAdmin: user.isAdmin })
   } catch (err) {
-    res.status(400).json({ mensagem: err.message })
+    if(err == 400){
+      res.status(400).json({ mensagem: err.message })
+    }
+    else if (err.code === 11000) {
+    const campoDuplicado = Object.keys(err.keyPattern || {})[0] || 'campo único'
+    return res.status(400).json({
+      mensagem: `Já existe um usuário com esse ${campoDuplicado}.`
+    })
+    } else {
+      res.status(500).json({ mensagem: 'Erro ao cadastrar usuário' })
+    }
+    
   }
 }
 
@@ -33,6 +44,28 @@ export async function entrar(req, res) {
     token,
     usuario: { id: user._id, nome: user.nome, isAdmin: user.isAdmin }
   })
+}
+
+// Retorna registros de usuários
+export async function listarUsuarios(req, res) {
+  try {
+    // pega todos os usuários, omitindo a senha
+    const users = await Usuario.find().select('-senha')
+    res.json(users)
+  } catch (err) {
+    res.status(500).json({ mensagem: err.message })
+  }
+}
+
+// retorna um usuário específico pelo ID
+export async function obterUsuario(req, res) {
+  try {
+    const user = await Usuario.findById(req.params.id).select('-senha')
+    if (!user) return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    res.json(user)
+  } catch (err) {
+    res.status(400).json({ mensagem: err.message })
+  }
 }
 
 // Edição de usuário existente

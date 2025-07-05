@@ -1,8 +1,9 @@
 import express from 'express'
-import { cadastrar, entrar } from '../controladores/autenticacaoController.js'
 import {
   cadastrar,
   entrar,
+  listarUsuarios,
+  obterUsuario,
   atualizarUsuario,
   deletarUsuario
 } from '../controladores/autenticacaoController.js'
@@ -10,19 +11,21 @@ import { proteger, somenteAdmin } from '../middleware/autenticar.js'
 
 const rotas = express.Router()
 
-// POST /api/auth/cadastrar para criar novo usuário
+// Rotas públicas
 rotas.post('/cadastrar', cadastrar)
+rotas.post('/entrar',    entrar)
 
-// POST /api/auth/entrar para login e gerar token
-rotas.post('/entrar', entrar)
+// Rotas de usuário autenticado
+rotas.use(proteger)
+rotas.get('/me', (req, res) => res.json(req.usuario))
 
-// GET /api/auth/me para leitura do perfil
- rotas.get('/me', proteger, (req, res) => res.json(req.usuario))
-
-// PUT /api/auth/usuario/:id para atualizar usuário (admin)
-rotas.put('/usuario/:id', proteger, somenteAdmin, atualizarUsuario)
-
-// DELETE /api/auth/usuario/:id para deletar usuário (admin)
-rotas.delete('/usuario/:id', proteger, somenteAdmin, deletarUsuario)
+// Rotas de administrador
+rotas.use(somenteAdmin)
+rotas.get('/usuarios', listarUsuarios)
+rotas
+  .route('/usuario/:id')
+  .get(obterUsuario)
+  .put(atualizarUsuario)
+  .delete(deletarUsuario)
 
 export default rotas
