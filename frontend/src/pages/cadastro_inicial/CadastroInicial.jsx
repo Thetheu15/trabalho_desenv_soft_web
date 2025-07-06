@@ -3,7 +3,8 @@ import './CadastroInicial.css'
 
 export default function CadastroInicial({ onCadastroInicial, switchToLogin }) {
   const [form, setForm] = useState({
-    nome: '', login: '', email: '', senha: '', cpf: ''
+    nome: '', login: '', email: '', senha: '', cpf: '',
+    endereco: '', telefone: ''
   })
 
   const handleChange = e => {
@@ -31,6 +32,8 @@ export default function CadastroInicial({ onCadastroInicial, switchToLogin }) {
           onChange={handleChange}
         />
         <input name="cpf" placeholder="CPF" value={form.cpf} onChange={handleChange} />
+        <input name="endereco"  placeholder="Endereço"  value={form.endereco}  onChange={handleChange} />
+        <input name="telefone"  placeholder="Telefone"  value={form.telefone}  onChange={handleChange} />
 
         <div className="btn-group">
           <button type="submit">Cadastrar</button>
