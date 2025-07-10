@@ -4,6 +4,10 @@ import Emprestimo from '../modelos/Emprestimo.js'
 export async function solicitarEmprestimo(req, res) {
   try {
     const { livroId } = req.params
+    const livro = await Livro.findById(livroId)
+    if (!livro) {
+      return res.status(404).json({ mensagem: 'Livro não encontrado' })
+    }
     const novo = await Emprestimo.create({
       usuario: req.usuario._id,
       livro:   livroId
@@ -20,6 +24,9 @@ export async function devolverEmprestimo(req, res) {
     const { emprestimoId } = req.params
     const emp = await Emprestimo.findById(emprestimoId)
     if (!emp) return res.status(404).json({ mensagem: 'Empréstimo não encontrado' })
+    if (emp.dataDevolucao) {
+      return res.status(400).json({ mensagem: 'Empréstimo já foi devolvido' })
+    }
     emp.dataDevolucao = new Date()
     await emp.save()
     return res.json(emp)
