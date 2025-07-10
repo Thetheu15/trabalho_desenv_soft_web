@@ -6,7 +6,7 @@ const livroSchema = new mongoose.Schema({
   ano:         { type: Number },
   editora:     { type: String },
   descricao:   { type: String },
-  situacao:    { type: String, default: 'Disponível' }
+  situacao:    { type: String, enum: ['Disponível', 'Emprestado'], default: 'Disponível' }
 }, { timestamps: true })
 
 export default mongoose.model('Livro', livroSchema)
