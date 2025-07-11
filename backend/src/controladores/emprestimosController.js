@@ -1,4 +1,5 @@
 import Emprestimo from '../modelos/Emprestimo.js'
+import Livro      from '../modelos/Livro.js'
 
 // Solicitar Empréstimo
 export async function solicitarEmprestimo(req, res) {
