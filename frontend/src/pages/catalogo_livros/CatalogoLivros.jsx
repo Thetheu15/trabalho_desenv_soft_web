@@ -1,51 +1,39 @@
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import BookCard from '../../components/BookCard/BookCard'
 import './CatalogoLivros.css'
 
 export default function CatalogoLivros({ onViewDetail }) {
-  const [books,       setBooks]       = useState([])
-  const [searchText, setSearchText] = useState('')
+  const exemplos = [
+    { _id: '1', titulo: 'Dom Casmurro',       autor: 'Machado de Assis',      situacao: 'Disponível' },
+    { _id: '2', titulo: 'O Pequeno Príncipe', autor: 'Antoine de Saint‑Exupéry', situacao: 'Emprestado'   },
+    { _id: '3', titulo: '1984',               autor: 'George Orwell',         situacao: 'Disponível' }
+  ]
+  const [busca, setBusca] = useState('')
 
-  useEffect(() => {
-    // TODO: buscar da API
-    setBooks([
-      { id: 1, title: 'Dom Casmurro', author: 'Machado de Assis', year: 1899, status: 'Disponível' },
-      { id: 2, title: 'O Cortiço', author: 'Aluísio Azevedo', year: 1890, status: 'Emprestado' },
-      // …
-    ])
-  }, [])
-
-  const filtered = books.filter(b =>
-    b.title.toLowerCase().includes(searchText.toLowerCase())
+  const livrosFiltrados = exemplos.filter(l =>
+    l.titulo.toLowerCase().includes(busca.toLowerCase())
   )
 
   return (
-    <div className="books-page">
-      <div className="books-header">
-        <h1>Catálogo de Livros</h1>
+    <div className="catalogo-container">
+      <div className="catalogo-header">
         <input
           type="text"
-          placeholder="Pesquisar por título..."
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
+          placeholder="Buscar por título..."
+          value={busca}
+          onChange={e => setBusca(e.target.value)}
+          className="catalogo-busca"
         />
       </div>
-      <table className="books-table">
-        <thead>
-          <tr>
-            <th>Título</th><th>Autor</th><th>Ano</th><th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(b => (
-            <tr key={b.id} onClick={() => onViewDetail(b.id)}>
-              <td className="link">{b.title}</td>
-              <td>{b.author}</td>
-              <td>{b.year}</td>
-              <td>{b.status}</td>
-            </tr>
+      {livrosFiltrados.length === 0 ? (
+        <p className="catalogo-vazio">Nenhum livro encontrado.</p>
+      ) : (
+        <div className="catalogo-grid">
+          {livrosFiltrados.map(book => (
+            <BookCard key={book._id} book={book} />
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   )
 }

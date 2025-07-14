@@ -1,0 +1,58 @@
+.bookcard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+  background: #fff;
+}
+
+.bookcard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bookcard--disponivel {
+  border-color: #4caf50;
+}
+
+.bookcard--indisponivel {
+  border-color: #f44336;
+  opacity: 0.7;
+}
+
+.bookcard__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bookcard__titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.bookcard__autor {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+.bookcard__situacao {
+  align-self: flex-start;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+.bookcard--disponivel .bookcard__situacao {
+  background: #4caf50;
+}
+
+.bookcard--indisponivel .bookcard__situacao {
+  background: #f44336;
+}
