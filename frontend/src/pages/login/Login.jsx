@@ -1,15 +1,18 @@
-import { useState } from 'react'
-import './Login.css'
+import { useState } from 'react';
+import './Login.css';
 
 export default function Login({ onLogin, switchToCadastroInicial }) {
-  const [login,    setLogin] = useState('')
-  const [password, setPass ] = useState('')
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState(''); 
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    // TODO: chamar API e, se OK:
-    onLogin({ id: 1, nome: login, isAdmin: false })
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!login || !senha) {
+      alert('Por favor, preencha o login e a senha.');
+      return;
+    }
+    onLogin({ login, senha });
+  };
 
   return (
     <div className="auth-container">
@@ -19,13 +22,15 @@ export default function Login({ onLogin, switchToCadastroInicial }) {
           type="text"
           placeholder="Login"
           value={login}
-          onChange={e => setLogin(e.target.value)}
+          onChange={(e) => setLogin(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Senha"
-          value={password}
-          onChange={e => setPass(e.target.value)}
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
         />
         <button type="submit">Entrar</button>
         <p className="switch">
@@ -34,5 +39,5 @@ export default function Login({ onLogin, switchToCadastroInicial }) {
         </p>
       </form>
     </div>
-  )
+  );
 }
