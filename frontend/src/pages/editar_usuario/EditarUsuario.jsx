@@ -8,7 +8,7 @@ function EditarUsuario() {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSelecionadoId, setUsuarioSelecionadoId] = useState('');
   const [formData, setFormData] = useState({
-    nome: '', login: '', email: '', senha: '', cpf: '', endereco: '', telefone: '',
+    nome: '', email: '', senha: '', cpf: '', endereco: '', telefone: '',
   });
 
   // Estados de controle da interface
@@ -43,9 +43,10 @@ function EditarUsuario() {
     if (id) {
       const usuarioParaEditar = usuarios.find(u => u._id === id);
       // Popula o formulário, mas deixa a senha em branco por segurança
-      setFormData({ ...usuarioParaEditar, senha: '' });
+      const { login, ...rest } = usuarioParaEditar;
+      setFormData({ ...rest, senha: '' });
     } else {
-      setFormData({ nome: '', login: '', email: '', senha: '', cpf: '', endereco: '', telefone: '' });
+      setFormData({ nome: '', email: '', senha: '', cpf: '', endereco: '', telefone: '' });
     }
   };
 
@@ -114,10 +115,6 @@ function EditarUsuario() {
         <form className="usuario-form" onSubmit={handleSubmit}>
           <div className="usuario-form-linhas">
             <div className="usuario-col-esq">
-              <div className="usuario-group">
-                <label htmlFor="login">Login</label>
-                <input type="text" id="login" name="login" value={formData.login} onChange={handleFormChange} required />
-              </div>
               <div className="usuario-group">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" value={formData.email} onChange={handleFormChange} required />
