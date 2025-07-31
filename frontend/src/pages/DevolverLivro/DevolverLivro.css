@@ -1,0 +1,99 @@
+/* Seu CSS original + estilos para a nova página */
+.devolver-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px B10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.devolver-container h1 {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.devolver-container p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Estilos para a tabela */
+.tabela-devolucao {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.tabela-devolucao table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.tabela-devolucao th, .tabela-devolucao td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.tabela-devolucao th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.tabela-devolucao tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s;
+}
+
+.tabela-devolucao tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabela-devolucao tbody tr:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Classe para a linha selecionada */
+.tabela-devolucao tr.selecionado {
+  background-color: #d4edda; /* Verde suave da seleção */
+  font-weight: 500;
+}
+
+/* Botões */
+.devolver-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.devolver-actions button {
+  width: 200px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+/* Estilo de cada botão (reaproveitado do seu CSS) */
+.confirm {
+  background: #94b49f; /* verde suave */
+  color: white;
+}
+.confirm:hover { background: #7fa88d; }
+.confirm:disabled { background: #ccc; cursor: not-allowed; }
+
+.back {
+  background: #d3d3d3; /* cinza suave */
+  color: #000;
+}
+.back:hover { background: #bcbcbc; }

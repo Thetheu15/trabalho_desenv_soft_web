@@ -29,7 +29,7 @@ function Sidebar({ isAdmin, onSelect }) {
             <li onClick={() => onSelect('formularioEmprestimo')}>Fazer Empréstimo</li>
             
             <li onClick={() => onSelect('historico')}>Meu Histórico</li>
-            <li onClick={() => onSelect('retornar')}>Devolver Livro</li>
+            <li onClick={() => onSelect('devolverLivro')}>Devolver Livro</li>
           </>
         )}
 

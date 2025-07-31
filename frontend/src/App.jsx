@@ -3,7 +3,9 @@ import Login from './pages/login/Login';
 import CadastroInicial from './pages/cadastro_inicial/CadastroInicial';
 import Sidebar from './components/Sidebar/Sidebar';
 import CatalogoLivros from './pages/catalogo_livros/CatalogoLivros';
-import Desktop5 from './pages/form_emprestimo/desktop5';
+import FormularioEmprestimo from './pages/form_emprestimo/desktop5';
+import HistoricoUsuario from './pages/HistoricoUsuario/HistoricoUsuario';
+import DevolverLivro from './pages/DevolverLivro/DevolverLivro';
 
 
 // Telas de admin
@@ -15,37 +17,43 @@ import RemoverUsuario from './pages/remover_usuario/RemoverUsuario';
 import CadastroLivros from './pages/CadastroLivros/CadastroLivros';
 
 // URL base da sua API
-const API_URL = 'http://localhost:3001'; // Ajuste a porta se for diferente
+const API_URL = 'http://localhost:3001';
 
 function App() {
   const [user, setUser] = useState(null);
   const [tela, setTela] = useState('login');
-  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento inicial
+  const [loading, setLoading] = useState(true);
+  const [selectedBook, setSelectedBook] = useState(null); // livro selecionado para empréstimo
+  const [bookUpdateCallback, setBookUpdateCallback] = useState(null); // callback para atualizar livro no catálogo
+  const [emprestimoParaDevolver, setEmprestimoParaDevolver] = useState(null);
 
-  // Efeito para verificar o token no carregamento da página
+  const handleDevolver = (emprestimo) => {
+    setEmprestimoParaDevolver(emprestimo);
+    setTela('confirmarDevolucao');
+  };
+
+  // Verifica token no carregamento
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      fetch(`${API_URL}/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => res.ok ? res.json() : Promise.reject(res))
-      .then(userData => {
-        setUser(userData);
-        setTela('catalogoLivros');
-      })
-      .catch(() => {
-        // Se o token for inválido, limpa o localStorage
-        localStorage.removeItem('authToken');
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
+        fetch(`${API_URL}/api/auth/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(userData => {
+          setUser(userData);
+          setTela('catalogoLivros');
+        })
+        .catch(() => {
+          localStorage.removeItem('authToken');
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
     } else {
-      setLoading(false); // Não há token, encerra o carregamento
+      setLoading(false);
     }
-  }, []); // O array vazio [] garante que isso só rode uma vez
+  }, []);
 
   const handleLogin = async (credentials) => {
     try {
@@ -66,7 +74,7 @@ function App() {
       setTela('catalogoLivros');
     } catch (error) {
       console.error("Falha no login:", error);
-      alert(error.message); // Exibe o erro para o usuário
+      alert(error.message);
     }
   };
 
@@ -77,12 +85,12 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
-      
+
       if (!response.ok) {
         const err = await response.json();
         throw new Error(err.mensagem || 'Erro ao cadastrar');
       }
-      
+
       alert('Cadastro realizado com sucesso! Faça o login para continuar.');
       setTela('login');
     } catch (error) {
@@ -97,9 +105,21 @@ function App() {
     setTela('login');
   };
 
-  if (loading) {
-    return <div>Carregando...</div>; // Tela de loading enquanto verifica o token
-  }
+  // Função para abrir o formulário de empréstimo com o livro selecionado e uma callback para atualizar o catálogo
+  const handleEmprestimo = (book, atualizarLivro) => {
+    setSelectedBook(book);
+    setBookUpdateCallback(() => atualizarLivro); // guardamos a função para depois usar
+    setTela('formularioEmprestimo');
+  };
+
+  // Função para atualizar o livro no catálogo após empréstimo
+  const handleLivroAtualizado = (livroAtualizado) => {
+    if (bookUpdateCallback) {
+      bookUpdateCallback(livroAtualizado);
+    }
+  };
+
+  if (loading) return <div>Carregando...</div>;
 
   if (!user) {
     return tela === 'CadastroInicial' ? (
@@ -113,6 +133,9 @@ function App() {
         switchToCadastroInicial={() => setTela('CadastroInicial')}
       />
     );
+
+    
+
   }
 
   return (
@@ -120,22 +143,46 @@ function App() {
       <Sidebar
         isAdmin={user.isAdmin}
         onSelect={action => {
-          if (action === 'logout') {
-            handleLogout();
-          } else {
-            setTela(action);
-          }
+          if (action === 'logout') handleLogout();
+          else setTela(action);
         }}
       />
       <div style={{ flex: 1, overflow: 'auto' }}>
-        {tela === 'catalogoLivros' && <CatalogoLivros />}
-        {tela === 'editarLivro'    && <EditarLivro />}
-        {tela === 'removerLivro'   && <RemoverLivro />}
-        {tela === 'cadastroUsuario'&& <CadastroUsuario />}
-        {tela === 'editarUsuario'  && <EditarUsuario />}
+        {tela === 'catalogoLivros' && (
+          <CatalogoLivros onEmprestar={handleEmprestimo} />
+        )}
+    
+        {tela === 'historico' && (
+          <HistoricoUsuario 
+            user={user} 
+            onVoltar={() => setTela('catalogoLivros')} 
+        />
+        )}
+
+        {tela === 'devolverLivro' && (
+          <DevolverLivro
+            emprestimo={emprestimoParaDevolver}
+            onClose={() => setTela('historico')} // Volta para o histórico
+          />
+        )}
+        
+        
+
+        {tela === 'editarLivro' && <EditarLivro />}
+        {tela === 'removerLivro' && <RemoverLivro />}
+        {tela === 'cadastroUsuario' && <CadastroUsuario />}
+        {tela === 'editarUsuario' && <EditarUsuario />}
         {tela === 'removerUsuario' && <RemoverUsuario />}
-        {tela === 'formularioEmprestimo' && <Desktop5 />}
         {tela === 'cadastroLivros' && <CadastroLivros />}
+
+        {tela === 'formularioEmprestimo' && (
+          <FormularioEmprestimo
+            user={user}
+            book={selectedBook}
+            onClose={() => setTela('catalogoLivros')}
+            onBookUpdated={handleLivroAtualizado}
+          />
+        )}
       </div>
     </div>
   );
