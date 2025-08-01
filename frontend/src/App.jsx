@@ -6,6 +6,7 @@ import CatalogoLivros from './pages/catalogo_livros/CatalogoLivros';
 import FormularioEmprestimo from './pages/form_emprestimo/desktop5';
 import HistoricoUsuario from './pages/HistoricoUsuario/HistoricoUsuario';
 import DevolverLivro from './pages/DevolverLivro/DevolverLivro';
+import DetalheLivro    from './pages/detalhe_livro/DetalheLivro'
 
 
 // Telas de admin
@@ -26,6 +27,13 @@ function App() {
   const [selectedBook, setSelectedBook] = useState(null); // livro selecionado para empréstimo
   const [bookUpdateCallback, setBookUpdateCallback] = useState(null); // callback para atualizar livro no catálogo
   const [emprestimoParaDevolver, setEmprestimoParaDevolver] = useState(null);
+  const [livroSelecionado, setLivroSelecionado] = useState(null)
+
+
+  function handleViewDetails(book) {
+    setLivroSelecionado(book);
+    setTela('detalheLivro');
+  }
 
   const handleDevolver = (emprestimo) => {
     setEmprestimoParaDevolver(emprestimo);
@@ -148,8 +156,18 @@ function App() {
         }}
       />
       <div style={{ flex: 1, overflow: 'auto' }}>
+        {tela === 'detalheLivro' && livroSelecionado && (
+        <DetalheLivro
+          book={livroSelecionado}
+          onBack={() => setTela('catalogoLivros')}
+          onEmprestar={() => handleEmprestimo(livroSelecionado, handleLivroAtualizado)}
+        />
+        )}
+
         {tela === 'catalogoLivros' && (
-          <CatalogoLivros onEmprestar={handleEmprestimo} />
+          <CatalogoLivros 
+            onEmprestar={handleEmprestimo} 
+            onViewDetails={handleViewDetails} />
         )}
     
         {tela === 'historico' && (

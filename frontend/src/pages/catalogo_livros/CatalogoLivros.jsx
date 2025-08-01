@@ -4,7 +4,7 @@ import './CatalogoLivros.css';
 
 const API_URL = 'http://localhost:3001';
 
-export default function CatalogoLivros({ onEmprestar }) {
+export default function CatalogoLivros({ onEmprestar, onViewDetails }) {
   const [livros, setLivros] = useState([]);
   const [busca, setBusca] = useState('');
   const [loading, setLoading] = useState(true);
@@ -75,6 +75,7 @@ export default function CatalogoLivros({ onEmprestar }) {
               key={book._id}
               book={book}
               onEmprestar={() => onEmprestar(book, atualizarLivroNoEstado)} // Passa livro + callback para atualizar estado
+              onClick={() => onViewDetails(book)}
             />
           ))}
         </div>
