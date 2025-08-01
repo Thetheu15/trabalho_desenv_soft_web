@@ -42,7 +42,7 @@ export async function entrar(req, res) {
 
   res.json({
     token,
-    usuario: { id: user._id, nome: user.nome, isAdmin: user.isAdmin }
+    usuario: { id: user._id, nome: user.nome, email: user.email, isAdmin: user.isAdmin }
   })
 }
 
